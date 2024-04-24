@@ -12,7 +12,7 @@ Le projet se divise en plusieurs étapes clés :
   Les données sont nettoyées, transformées et préparées pour l'analyse.
 
 - ### Modélisation :
-  Un modèle de prédiction est développé à l'aide de techniques de machine learning telles que la régression logistique, les arbres de décision, etc. Le modèle est entraîné sur les données historiques pour apprendre les schémas et les relations.
+  Un modèle de prédiction est développé à l'aide de techniques de machine learning telles que la régression logistique. Le modèle est entraîné sur les données historiques pour apprendre les schémas et les relations.
 
 - ### Évaluation du modèle :
    La performance du modèle est évaluée à l'aide de mesures telles que l'exactitude, la précision. Cela permet de déterminer l'efficacité du modèle dans la prédiction des absences.
