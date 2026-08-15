@@ -1,23 +1,23 @@
 # Prédiction des Absences des Employés
 
-Ce projet vise à développer un modèle de prédiction des absences des employés dans une entreprise en utilisant des techniques de machine learning. L'objectif est de fournir aux gestionnaires des ressources humaines un outil prédictif pour anticiper et gérer les absences des employés, ce qui peut permettre une meilleure planification des effectifs et une optimisation des ressources.
+This project aims to develop a model for predicting employee absences within a company using machine learning techniques. The goal is to provide human resources managers with a predictive tool to anticipate and manage employee absences, thereby enabling better workforce planning and resource optimization.
 
 ## Description
-Le projet se divise en plusieurs étapes clés :
+The project is divided into several key stages:
 
-- ### Collecte des données :
-   Les données sur les absences des employés, y compris les raisons, les durées et d'autres facteurs pertinents, sont collectées à partir des sources internes de l'entreprise.
+- ### Data Collection:
+Data regarding employee absences—including reasons, durations, and other relevant factors—is collected from the company's internal sources.
 
-- ### Prétraitement des données :
-  Les données sont nettoyées, transformées et préparées pour l'analyse.
+- ### Data Preprocessing:
+The data is cleaned, transformed, and prepared for analysis.
 
-- ### Modélisation :
-  Un modèle de prédiction est développé à l'aide de techniques de machine learning telles que la régression logistique. Le modèle est entraîné sur les données historiques pour apprendre les schémas et les relations.
+- ### Modeling:
+A predictive model is developed using machine learning techniques such as logistic regression. The model is trained on historical data to learn patterns and relationships.
 
-- ### Évaluation du modèle :
-   La performance du modèle est évaluée à l'aide de mesures telles que l'exactitude, la précision. Cela permet de déterminer l'efficacité du modèle dans la prédiction des absences.
+- ### Model Evaluation:
+The model's performance is evaluated using metrics such as accuracy and precision. This helps determine the model's effectiveness in predicting absences.
 
-- ### Déploiement et utilisation :
-   Une fois le modèle validé, il peut être déployé dans l'environnement de production de l'entreprise. Les gestionnaires des ressources humaines peuvent alors l'utiliser pour prédire les absences des employés et prendre des décisions éclairées en matière de planification des effectifs.
+- ### Deployment and Use:
+Once validated, the model can be deployed in the company's production environment. Human Resources managers can then use it to predict employee absences and make informed decisions regarding workforce planning.
 
-## Contenu du Répertoire
+## Repository Contents
