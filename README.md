@@ -1,4 +1,4 @@
-# Prédiction des Absences des Employés
+# Employee Absence Prediction
 
 This project aims to develop a model for predicting employee absences within a company using machine learning techniques. The goal is to provide human resources managers with a predictive tool to anticipate and manage employee absences, thereby enabling better workforce planning and resource optimization.
 
