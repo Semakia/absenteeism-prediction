@@ -52,10 +52,12 @@ def reason_to_group(reason_code: int) -> int:
     Parameters:
     -----------
     reason_code:
-        code of the rease=on of the aemployee'absence
-    
+        Raw code of the employee's absence reason (0-28).
+
     Returns:
-        The group of the reason
+    --------
+    int
+        The reason group (1, 2, 3 or 4).
     """
     if 1 <= reason_code <= 14:
         return 1
@@ -79,7 +81,40 @@ def build_feature_row(
     children: int,
     pets: int,
 ) -> dict:
-    """Build a single feature dict, in FEATURE_COLUMNS order, for one absence event."""
+    """Build a single feature dict for one absence event.
+
+    Applies the same transformations used at training time: one-hot encoding
+    of the reason group, month and weekday extracted from the date, and the
+    education level folded into a single "higher education" flag.
+
+    Parameters:
+    -----------
+    reason_for_absence:
+        Raw ICD-based absence reason code (0-28).
+    absence_date:
+        Date of the absence; its month and weekday become features.
+    transportation_expense:
+        Monthly transportation expense of the employee.
+    distance_to_work:
+        Distance from home to work.
+    age:
+        Age of the employee, in years.
+    daily_work_load_average:
+        Average daily workload at the time of the absence.
+    body_mass_index:
+        Body mass index of the employee.
+    education:
+        Education level (1 = high school, 2/3/4 = higher education).
+    children:
+        Number of children of the employee.
+    pets:
+        Number of pets of the employee.
+
+    Returns:
+    --------
+    dict
+        One feature row keyed by the names in ``FEATURE_COLUMNS``.
+    """
     group = reason_to_group(reason_for_absence)
     return {
         "reason_group_1": int(group == 1),
@@ -102,6 +137,22 @@ def build_feature_row(
 
 
 def features_to_dataframe(rows: list[dict]) -> pd.DataFrame:
+    """Assemble feature dicts into a column-ordered dataframe.
+
+    Reindexes on ``FEATURE_COLUMNS`` so the columns are always in the order
+    the model expects (any missing column is filled with ``NaN``). scikit-learn
+    relies on column position, so this ordering is required.
+
+    Parameters:
+    -----------
+    rows:
+        List of feature dicts, as produced by :func:`build_feature_row`.
+
+    Returns:
+    --------
+    pandas.DataFrame
+        Feature matrix with columns ordered as in ``FEATURE_COLUMNS``.
+    """
     dataframe = pd.DataFrame(rows)
     return dataframe.reindex(columns=FEATURE_COLUMNS)
 
@@ -113,11 +164,13 @@ def load_raw_dataset(csv_path: str) -> pd.DataFrame:
     Parameters:
     -----------
     csv_path:
-        the original flat csv
-    
+        Path to the original flat CSV file.
+
     Returns:
     --------
-     the output dataframe
+    pandas.DataFrame
+        Cleaned dataframe: ``ID`` dropped, columns renamed to snake_case, and
+        ``absence_date`` parsed into ``date`` objects.
     """
     dataframe = pd.read_csv(csv_path)
     dataframe = dataframe.drop(columns=["ID"])
@@ -139,6 +192,22 @@ def preprocess_dataframe(
     "Excessive absenteeism" is defined as more hours than `threshold_hours`
     (the dataset median by default, matching standard practice for this
     dataset rather than an arbitrary fixed cut-off).
+
+    Parameters:
+    -----------
+    df:
+        Raw dataframe with one row per historical absence event, including the
+        ``absenteeism_time_in_hours`` column used to build the target.
+    threshold_hours:
+        Absence-hours cut-off above which an event is labelled "excessive".
+        Defaults to the median of ``absenteeism_time_in_hours`` when ``None``.
+
+    Returns:
+    --------
+    tuple[pandas.DataFrame, pandas.Series, float]
+        The feature matrix ``X``, the binary target ``y`` (``is_excessive``),
+        and the ``threshold_hours`` actually used (so it can be persisted and
+        reused at inference time).
     """
     rows = [
         build_feature_row(
@@ -161,7 +230,9 @@ def preprocess_dataframe(
         threshold_hours = float(df["absenteeism_time_in_hours"].median())
 
     y = pd.Series(
-        np.where(df["absenteeism_time_in_hours"].to_numpy() > threshold_hours, 1, 0),
+        np.where(
+            df["absenteeism_time_in_hours"].to_numpy() > threshold_hours, 1, 0
+            ),
         name="is_excessive",
     )
     return X, y, threshold_hours
