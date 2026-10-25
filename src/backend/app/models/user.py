@@ -7,6 +7,9 @@ from app.database import Base
 
 
 class User(Base):
+    """
+    Class for Users table in database
+    """
     ___tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -24,7 +27,11 @@ class User(Base):
         nullable=False,
         default="hr_manager"
     )
-    role: Mapped[str] = mapped_column(String(50), nullable=False, default="hr-manager")
+    role: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="hr-manager"
+    )
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         default=True,
