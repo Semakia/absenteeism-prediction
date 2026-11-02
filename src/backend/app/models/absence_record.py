@@ -9,6 +9,10 @@ from app.database import Base
 class AbsenceRecord(Base):
     """
         A single historical absence event used as training data 
+        Ties an employee to one past absence: its reason code (0-28), its date, and
+        its duration in hours. The duration is the raw signal from which the
+        "excessive absenteeism" target is derived at training time. Deleted along
+        with its employee (CASCADE).
     """
 
     __tablename__ = "absence_records"

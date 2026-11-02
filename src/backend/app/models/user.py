@@ -8,7 +8,11 @@ from app.database import Base
 
 class User(Base):
     """
-    Class for Users table in database
+    An HR account allowed to authenticate and use the API.
+
+    Stores credentials (as a bcrypt hash, never plaintext) and the account
+    state. ``is_active`` lets an account be disabled without being deleted;
+    login is refused when it is False.
     """
     ___tablename__ = "users"
 
