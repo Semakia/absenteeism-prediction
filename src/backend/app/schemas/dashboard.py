@@ -41,6 +41,6 @@ class DashboardStats(BaseModel):
     total_predictions: int
     total_absence_records: int
     excessive_rate: float
-    reason_breakdown: list(ReasonGroupBreakdown)
-    monthly_average_hours: list(MonthlyAverage)
+    reason_breakdown: list[ReasonGroupBreakdown]
+    monthly_average_hours: list[MonthlyAverage]
     active_model: ModelInfo | None

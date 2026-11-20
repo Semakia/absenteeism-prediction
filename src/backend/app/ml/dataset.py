@@ -2,10 +2,10 @@ import pandas as pd
 from sqlalchemy.orm import Session
 
 from app.models.absence_record import AbsenceRecord
-from app.maodels.employee import Employee
+from app.models.employee import Employee
 
 
-def build_training_datframe(db: Session) -> pd.DataFrame:
+def build_training_dataframe(db: Session) -> pd.DataFrame:
     """Join every historical absence event with its employee's demographic
     data into the flat shape expected by `preprocessing.preprocess_dataframe`.
     """
