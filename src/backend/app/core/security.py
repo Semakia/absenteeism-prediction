@@ -53,7 +53,7 @@ def create_access_token(
         str: The generated JWT access token.
     """
     expire = datetime.now(timezone.utc) + timedelta(
-        minutes=settings.access_token_expires_minutes
+        minutes=settings.access_token_expire_minutes
     )
     to_encode: dict[str, Any] = {"sub": subject, "exp": expire}
     if extra_claims:

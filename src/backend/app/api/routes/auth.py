@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from app.api.deps import  get_current_user
-from app.core.security import create_access_token, hash_password
+from app.core.security import create_access_token, hash_password, verify_password
 from app.database import get_db
 from app.models.user import User
 from app.schemas.user import Token, UserCreate, UserOut
@@ -21,7 +21,7 @@ def login(
     Authenticate a user and return a JWT token
     """
     user = db.query(User).filter(User.email == form_data.username).first()
-    if not user or not user.verify_password(form_data.password, user.hashed_password):
+    if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -32,7 +32,7 @@ def login(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Inactive user",
         )
-    access_token = create_access_token(data={"sub": user.email})
+    access_token = create_access_token(subject=user.email)
     return Token(access_token=access_token)
 
 
@@ -65,7 +65,7 @@ def register_user(
         )
     user = User(
         email=payload.email,
-        hashed_password=payload.password,
+        hashed_password=hash_password(payload.password),
         is_active=True
     )
     db.add(user)
