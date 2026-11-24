@@ -1,11 +1,12 @@
 # Python
 __pycache__/
 *.py[cod]
-.venv/
+.venv*/
 *.egg-info/
 .pytest_cache/
 .coverage
-backend/app/ml/artifacts/
+src/backend/app/ml/artifacts/
+src/backend/verify_ml.py
 
 # Env
 .env

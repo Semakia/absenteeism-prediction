@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: absenteeism
+      POSTGRES_PASSWORD: absenteeism
+      POSTGRES_DB: absenteeism
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # Le backend attend que ce test passe avant de demarrer (voir depends_on).
+      test: ["CMD-SHELL", "pg_isready -U absenteeism -d absenteeism"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./src/backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Host = "db" (nom du service), PAS localhost : on est dans le reseau Docker.
+      DATABASE_URL: postgresql+psycopg2://absenteeism:absenteeism@db:5432/absenteeism
+      SECRET_KEY: dev-secret-change-me
+      ENVIRONMENT: development
+      INITIAL_ADMIN_EMAIL: admin@example.com
+      INITIAL_ADMIN_PASSWORD: ChangeMe123!
+    ports:
+      # Hote 8001 -> conteneur 8000 : evite la collision avec un autre
+      # service deja publie sur le port hote 8000 (ex. "Crypto Viz API").
+      - "8001:8000"
+    volumes:
+      # Persiste le modele entraine entre les redemarrages du conteneur.
+      - ml_artifacts:/code/app/ml/artifacts
+
+volumes:
+  pgdata:
+  ml_artifacts:
