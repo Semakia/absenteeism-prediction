@@ -1,0 +1,20 @@
+# Environnements virtuels (jamais dans l'image : l'image a son propre Python)
+.venv*/
+
+# Caches Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# Artifacts ML (regeneres par le seed au demarrage)
+app/ml/artifacts/
+
+# Config locale : on passe par les variables d'env du compose, pas un .env copie
+.env
+.env.*
+
+# Divers
+*.md
+verify_ml.py
+.git/
