@@ -29,7 +29,9 @@ services:
       INITIAL_ADMIN_EMAIL: admin@example.com
       INITIAL_ADMIN_PASSWORD: ChangeMe123!
     ports:
-      - "8000:8000"
+      # Hote 8001 -> conteneur 8000 : evite la collision avec un autre
+      # service deja publie sur le port hote 8000 (ex. "Crypto Viz API").
+      - "8001:8000"
     volumes:
       # Persiste le modele entraine entre les redemarrages du conteneur.
       - ml_artifacts:/code/app/ml/artifacts

@@ -146,10 +146,13 @@ def train_and_evaluate(
         artifact_dir=artifact_dir,
         n_train_samples=len(train_X),
         n_test_samples=len(test_X),
-        accuracy=accuracy_score(test_y, predictions),
-        precision=precision_score(test_y, predictions, zero_division=0),
-        recall=recall_score(test_y, predictions, zero_division=0),
-        f1_score=f1_score(test_y, predictions, zero_division=0),
-        roc_auc=roc_auc_score(test_y, probabilities),
-        threshold_hours=threshold_hours,
+        # float(...) : les metriques sklearn sont des numpy.float64, que
+        # psycopg2 ne sait pas convertir pour l'INSERT (il produit un SQL
+        # invalide type "np.float64(...)"). On repasse en float Python natif.
+        accuracy=float(accuracy_score(test_y, predictions)),
+        precision=float(precision_score(test_y, predictions, zero_division=0)),
+        recall=float(recall_score(test_y, predictions, zero_division=0)),
+        f1_score=float(f1_score(test_y, predictions, zero_division=0)),
+        roc_auc=float(roc_auc_score(test_y, probabilities)),
+        threshold_hours=float(threshold_hours),
     )
