@@ -1,0 +1,65 @@
+<div class="dash">
+  <header class="dash-header">
+    <h1>Dashboard</h1>
+    <button class="logout" (click)="logout()">Se déconnecter</button>
+  </header>
+
+  @if (loading()) {
+    <p class="muted">Chargement…</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else {
+    @if (stats(); as s) {
+
+      <section class="tiles">
+        <div class="tile"><span class="tile-val">{{ s.total_employees }}</span><span class="tile-lbl">Employés</span></div>
+        <div class="tile"><span class="tile-val">{{ s.total_absence_records }}</span><span class="tile-lbl">Absences enregistrées</span></div>
+        <div class="tile"><span class="tile-val">{{ s.total_predictions }}</span><span class="tile-lbl">Prédictions</span></div>
+        <div class="tile"><span class="tile-val">{{ s.excessive_rate * 100 | number:'1.0-1' }}%</span><span class="tile-lbl">Taux « excessif »</span></div>
+      </section>
+
+      @if (s.active_model; as m) {
+        <section class="card">
+          <h2>Modèle actif <small>v{{ m.version }}</small></h2>
+          <div class="metrics">
+            <div class="metric"><b>{{ m.accuracy | number:'1.0-3' }}</b><span>Accuracy</span></div>
+            <div class="metric"><b>{{ m.precision | number:'1.0-3' }}</b><span>Precision</span></div>
+            <div class="metric"><b>{{ m.recall | number:'1.0-3' }}</b><span>Recall</span></div>
+            <div class="metric"><b>{{ m.f1_score | number:'1.0-3' }}</b><span>F1</span></div>
+            <div class="metric"><b>{{ m.roc_auc | number:'1.0-3' }}</b><span>ROC AUC</span></div>
+          </div>
+        </section>
+      } @else {
+        <section class="card"><p class="muted">Aucun modèle actif.</p></section>
+      }
+
+      <div class="two-col">
+        <section class="card">
+          <h2>Absences par groupe de motif</h2>
+          @for (r of s.reason_breakdown; track r.reason_group) {
+            <div class="bar-row">
+              <span class="bar-lbl">Groupe {{ r.reason_group }}</span>
+              <div class="bar"><div class="bar-fill" [style.width.%]="(r.count / maxReason()) * 100"></div></div>
+              <span class="bar-val">{{ r.count }}</span>
+            </div>
+          } @empty {
+            <p class="muted">Aucune donnée.</p>
+          }
+        </section>
+
+        <section class="card">
+          <h2>Heures moyennes / mois</h2>
+          @for (m of s.monthly_average_hours; track m.month) {
+            <div class="bar-row">
+              <span class="bar-lbl">{{ monthLabel(m.month) }}</span>
+              <div class="bar"><div class="bar-fill alt" [style.width.%]="(m.average_hours / maxMonthly()) * 100"></div></div>
+              <span class="bar-val">{{ m.average_hours | number:'1.0-1' }}h</span>
+            </div>
+          } @empty {
+            <p class="muted">Aucune donnée.</p>
+          }
+        </section>
+      </div>
+    }
+  }
+</div>
