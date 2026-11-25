@@ -14,9 +14,9 @@ src/backend/verify_ml.py
 !.env.example
 
 # Node / Angular
-frontend/node_modules/
-frontend/dist/
-frontend/.angular/
+**/node_modules/
+**/dist/
+**/.angular/
 
 # Terraform
 infra/terraform/.terraform/

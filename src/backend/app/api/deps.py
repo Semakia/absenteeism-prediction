@@ -22,13 +22,13 @@ def get_current_user(
     """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Coukd not validate credentials",
-        headers=["WWW-Authenticate: Bearer"],
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
     )
     payload = decode_access_token(token)
     if payload is None or "sub" not in payload:
         raise credentials_exception
-    user = db.get(User, int(payload["sub"]))
+    user = db.query(User).filter(User.email == payload["sub"]).first()
     if user is None or not user.is_active:
         raise credentials_exception
     return user

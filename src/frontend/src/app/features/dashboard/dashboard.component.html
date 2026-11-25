@@ -1,7 +1,10 @@
 <div class="dash">
   <header class="dash-header">
     <h1>Dashboard</h1>
-    <button class="logout" (click)="logout()">Se déconnecter</button>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a routerLink="/employees" class="logout" style="text-decoration:none">Employés</a>
+      <button class="logout" (click)="logout()">Se déconnecter</button>
+    </div>
   </header>
 
   @if (loading()) {

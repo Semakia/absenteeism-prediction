@@ -1,0 +1,74 @@
+<div class="emp">
+  <header class="emp-header">
+    <div class="titles">
+      <a routerLink="/dashboard" class="back">← Dashboard</a>
+      <h1>Employés</h1>
+    </div>
+    <button class="primary" (click)="toggleForm()">
+      {{ showForm() ? 'Fermer' : '+ Ajouter' }}
+    </button>
+  </header>
+
+  @if (showForm()) {
+    <form class="card form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="grid">
+        <label>Prénom<input formControlName="first_name" /></label>
+        <label>Nom<input formControlName="last_name" /></label>
+        <label>Âge<input type="number" formControlName="age" /></label>
+        <label>Frais transport<input type="number" formControlName="transportation_expense" /></label>
+        <label>Distance (km)<input type="number" formControlName="distance_to_work" /></label>
+        <label>Charge travail moy.<input type="number" formControlName="daily_work_load_average" /></label>
+        <label>IMC<input type="number" formControlName="body_mass_index" /></label>
+        <label>Éducation<input type="number" formControlName="education" /></label>
+        <label>Animaux<input type="number" formControlName="pets" /></label>
+      </div>
+      <button class="primary" type="submit" [disabled]="form.invalid || saving()">
+        {{ saving() ? 'Enregistrement…' : 'Créer un employé' }}
+      </button>
+    </form>
+  }
+
+  <div class="toolbar">
+    <input class="search" placeholder="Rechercher par nom…" #q (keyup.enter)="onSearch(q.value)" />
+    <button (click)="onSearch(q.value)">Rechercher</button>
+    @if (search()) {
+      <button class="ghost" (click)="q.value = ''; onSearch('')">Réinitialiser</button>
+    }
+  </div>
+
+  @if (error()) { <p class="error">{{ error() }}</p> }
+
+  @if (loading()) {
+    <p class="muted">Chargement…</p>
+  } @else {
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Nom</th><th>Âge</th><th>Transport</th><th>Distance</th>
+            <th>Charge</th><th>IMC</th><th>Éduc.</th><th>Animaux</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of rows(); track e.id) {
+            <tr>
+              <td>{{ e.id }}</td>
+              <td>{{ e.first_name }} {{ e.last_name }}</td>
+              <td>{{ e.age }}</td>
+              <td>{{ e.transportation_expense }}</td>
+              <td>{{ e.distance_to_work }}</td>
+              <td>{{ e.daily_work_load_average }}</td>
+              <td>{{ e.body_mass_index }}</td>
+              <td>{{ e.education }}</td>
+              <td>{{ e.pets }}</td>
+              <td><button class="danger" (click)="remove(e)" title="Supprimer">✕</button></td>
+            </tr>
+          } @empty {
+            <tr><td colspan="10" class="muted">Aucun employé.</td></tr>
+          }
+        </tbody>
+      </table>
+      <p class="count">{{ rows().length }} affiché(s) — max 50 par page.</p>
+    </div>
+  }
+</div>
