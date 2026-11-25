@@ -64,7 +64,7 @@ class PredictionOut(BaseModel):
     employee_id: int | None
     reason_for_absence: int
     absence_date: date
-    manual_features: ManualEmployeeFeatures | None
+    input_features: dict
     probability: float
     is_excessive: bool
     model_version: str

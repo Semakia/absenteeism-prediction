@@ -1,0 +1,78 @@
+<div class="pred">
+  <header class="pred-header">
+    <div class="titles">
+      <a routerLink="/dashboard" class="back">← Dashboard</a>
+      <h1>Prédictions</h1>
+    </div>
+    <a routerLink="/employees" class="back">Employés →</a>
+  </header>
+
+  <section class="card">
+    <h2>Nouvelle prédiction</h2>
+
+    @if (loading()) {
+      <p class="muted">Chargement des employés…</p>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="grid">
+          <label>Employé
+            <select formControlName="employee_id">
+              <option [ngValue]="null" disabled>— Choisir —</option>
+              @for (e of employees(); track e.id) {
+                <option [ngValue]="e.id">{{ e.first_name }} {{ e.last_name }} (#{{ e.id }})</option>
+              }
+            </select>
+          </label>
+          <label>Motif d'absence (0–28)
+            <input type="number" min="0" max="28" formControlName="reason_for_absence" />
+          </label>
+          <label>Date d'absence
+            <input type="date" formControlName="absence_date" />
+          </label>
+        </div>
+        <p class="hint">Code motif : 0 = non médical · 1–21 = maladies (CIM-10) · 22–28 = consultations, examens, suivi.</p>
+        <button class="primary" type="submit" [disabled]="form.invalid || saving()">
+          {{ saving() ? 'Calcul…' : 'Prédire' }}
+        </button>
+      </form>
+    }
+
+    @if (error()) { <p class="error">{{ error() }}</p> }
+
+    @if (result(); as r) {
+      <div class="result" [class.excessive]="r.is_excessive">
+        <div class="result-prob">{{ r.probability * 100 | number:'1.0-1' }}%</div>
+        <div class="result-txt">
+          <strong>{{ r.is_excessive ? 'Absence excessive probable' : 'Absence non excessive' }}</strong>
+          <span class="muted">Modèle v{{ r.model_version }}</span>
+        </div>
+      </div>
+    }
+  </section>
+
+  <section class="card">
+    <h2>Historique récent</h2>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Employé</th><th>Motif</th><th>Probabilité</th><th>Décision</th></tr>
+      </thead>
+      <tbody>
+        @for (p of recent(); track p.id) {
+          <tr>
+            <td>{{ p.absence_date }}</td>
+            <td>{{ employeeName(p.employee_id) }}</td>
+            <td>{{ p.reason_for_absence }}</td>
+            <td>{{ p.probability * 100 | number:'1.0-1' }}%</td>
+            <td>
+              <span class="badge" [class.badge-exc]="p.is_excessive">
+                {{ p.is_excessive ? 'Excessive' : 'Normale' }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="muted">Aucune prédiction encore.</td></tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>

@@ -22,5 +22,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/employees/employees.component').then((m) => m.EmployeesComponent),
   },
+
+  {
+    path: 'predictions',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/predictions/predictions.component').then((m) => m.PredictionsComponent),
+  },
   { path: '**', redirectTo: 'login' },
 ];
