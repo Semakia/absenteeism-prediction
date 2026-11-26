@@ -6,6 +6,7 @@ import { AuthService } from '../../core/auth.service';
 import { DashboardService } from '../../core/dashboard.service';
 import { DashboardStats } from '../../core/models/dashboard.models';
 import { RouterLink } from '@angular/router';
+import { TourService } from '../../core/tour.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +19,7 @@ export class DashboardComponent implements OnInit {
   private auth = inject(AuthService);
   private router = inject(Router);
   private dashboard = inject(DashboardService);
+  private tour = inject(TourService);
 
   stats = signal<DashboardStats | null>(null);
   error = signal<string | null>(null);
@@ -28,6 +30,8 @@ export class DashboardComponent implements OnInit {
       next: (s) => {
         this.stats.set(s);
         this.loading.set(false);
+        // Lance la visite guidée au tout premier passage (une seule fois).
+        this.tour.maybeAutoStart();
       },
       error: () => {
         this.error.set('Impossible de charger les statistiques.');
@@ -54,6 +58,11 @@ export class DashboardComponent implements OnInit {
   monthLabel(month: number): string {
     const names = ['', 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
     return names[month] ?? String(month);
+  }
+
+  /** Relance la visite guidée à la demande (bouton de l'en-tête). */
+  startTour(): void {
+    this.tour.start();
   }
 
   logout(): void {

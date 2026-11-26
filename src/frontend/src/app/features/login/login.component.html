@@ -1,6 +1,20 @@
 <div class="login-wrap">
   <form class="login-card" [formGroup]="form" (ngSubmit)="submit()">
-    <h1>Absenteeism Prediction</h1>
+    <div class="login-brand">
+      <span class="logo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18" />
+          <rect x="7" y="11" width="3" height="6" />
+          <rect x="12" y="7" width="3" height="10" />
+          <rect x="17" y="13" width="3" height="4" />
+        </svg>
+      </span>
+      <div>
+        <h1>Absenteeism Prediction</h1>
+        <p class="sub">Connecte-toi pour accéder au tableau de bord.</p>
+      </div>
+    </div>
+
     <label>
       Email
       <input type="email" formControlName="email" autocomplete="username" />
@@ -14,7 +28,7 @@
       <p class="error">{{ error() }}</p>
     }
 
-    <button type="submit" [disabled]="form.invalid || loading()">
+    <button class="primary" type="submit" [disabled]="form.invalid || loading()">
       {{ loading() ? 'Connexion…' : 'Se connecter' }}
     </button>
   </form>

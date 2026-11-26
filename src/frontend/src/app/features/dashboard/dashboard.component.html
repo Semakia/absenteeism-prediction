@@ -1,11 +1,11 @@
-<div class="dash">
-  <header class="dash-header">
-    <h1>Dashboard</h1>
-    <div style="display:flex;gap:10px;align-items:center">
-      <a routerLink="/employees" class="logout" style="text-decoration:none">Employés</a>
-            <a routerLink="/predictions" class="logout" style="text-decoration:none">Prédictions</a>
-      <button class="logout" (click)="logout()">Se déconnecter</button>
+<div class="page">
+  <header class="page-head row">
+    <div>
+      <p class="eyebrow">Vue d'ensemble</p>
+      <h1>Dashboard</h1>
+      <p class="page-sub">Statistiques d'absentéisme et performance du modèle de prédiction.</p>
     </div>
+    <button class="ghost" (click)="startTour()">? Visite guidée</button>
   </header>
 
   @if (loading()) {
@@ -15,16 +15,16 @@
   } @else {
     @if (stats(); as s) {
 
-      <section class="tiles">
+      <section class="tiles" data-tour="tiles">
         <div class="tile"><span class="tile-val">{{ s.total_employees }}</span><span class="tile-lbl">Employés</span></div>
         <div class="tile"><span class="tile-val">{{ s.total_absence_records }}</span><span class="tile-lbl">Absences enregistrées</span></div>
         <div class="tile"><span class="tile-val">{{ s.total_predictions }}</span><span class="tile-lbl">Prédictions</span></div>
-        <div class="tile"><span class="tile-val">{{ s.excessive_rate * 100 | number:'1.0-1' }}%</span><span class="tile-lbl">Taux « excessif »</span></div>
+        <div class="tile"><span class="tile-val accent">{{ s.excessive_rate * 100 | number:'1.0-1' }}%</span><span class="tile-lbl">Taux « excessif »</span></div>
       </section>
 
       @if (s.active_model; as m) {
-        <section class="card">
-          <h2>Modèle actif <small>v{{ m.version }}</small></h2>
+        <section class="card" data-tour="model">
+          <h2>Modèle actif <small>· v{{ m.version }}</small></h2>
           <div class="metrics">
             <div class="metric"><b>{{ m.accuracy | number:'1.0-3' }}</b><span>Accuracy</span></div>
             <div class="metric"><b>{{ m.precision | number:'1.0-3' }}</b><span>Precision</span></div>
@@ -38,10 +38,13 @@
       }
 
       <div class="two-col">
-        <section class="card">
-          <h2>Absences par groupe de motif</h2>
+        <section class="card" data-tour="reasons">
+          <h2 style="display:flex;justify-content:space-between;align-items:baseline">
+            <span>Absences par groupe de motif</span>
+            <a routerLink="/help" style="font-size:12px;font-weight:500">Que signifient les groupes ?</a>
+          </h2>
           @for (r of s.reason_breakdown; track r.reason_group) {
-            <div class="bar-row">
+            <div class="bar-row" [title]="'Groupe ' + r.reason_group + ' : ' + r.count + ' absences'">
               <span class="bar-lbl">Groupe {{ r.reason_group }}</span>
               <div class="bar"><div class="bar-fill" [style.width.%]="(r.count / maxReason()) * 100"></div></div>
               <span class="bar-val">{{ r.count }}</span>
@@ -54,7 +57,7 @@
         <section class="card">
           <h2>Heures moyennes / mois</h2>
           @for (m of s.monthly_average_hours; track m.month) {
-            <div class="bar-row">
+            <div class="bar-row" [title]="monthLabel(m.month) + ' : ' + (m.average_hours | number:'1.0-1') + ' h'">
               <span class="bar-lbl">{{ monthLabel(m.month) }}</span>
               <div class="bar"><div class="bar-fill alt" [style.width.%]="(m.average_hours / maxMonthly()) * 100"></div></div>
               <span class="bar-val">{{ m.average_hours | number:'1.0-1' }}h</span>

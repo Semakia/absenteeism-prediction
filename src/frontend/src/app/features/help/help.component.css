@@ -1,0 +1,37 @@
+/* Couleurs par groupe (décoratives : toujours accompagnées du libellé "Groupe N"). */
+.g1 { --g: #818cf8; }
+.g2 { --g: #34d399; }
+.g3 { --g: #fbbf24; }
+.g4 { --g: #fb7185; }
+
+/* Étapes "comment ça marche" */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.step { display: flex; gap: 12px; align-items: flex-start; background: var(--surface-2); border: 1px solid var(--border-soft); border-radius: var(--radius-sm); padding: 14px; }
+.step p { margin: 0; font-size: 13px; color: var(--text-muted); }
+.step p strong { color: var(--text); }
+.step-n { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; background: var(--accent-weak); color: var(--accent); }
+
+/* Cartes de groupe */
+.group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.group-card { border: 1px solid var(--border); border-left: 3px solid var(--g); border-radius: var(--radius-sm); padding: 16px; background: var(--surface-2); }
+.group-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.group-badge { font-size: 12px; font-weight: 700; color: var(--g); }
+.group-range { font-size: 11px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.group-label { display: block; font-size: 15px; margin-bottom: 6px; }
+.group-desc { margin: 0; font-size: 13px; color: var(--text-muted); }
+
+/* Attribution couleur par data-g (groupes + pills du tableau) */
+.group-card[data-g="1"], .g-pill[data-g="1"] { --g: #818cf8; }
+.group-card[data-g="2"], .g-pill[data-g="2"] { --g: #34d399; }
+.group-card[data-g="3"], .g-pill[data-g="3"] { --g: #fbbf24; }
+.group-card[data-g="4"], .g-pill[data-g="4"] { --g: #fb7185; }
+
+/* Pastille de groupe dans le tableau */
+.g-pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 999px; color: var(--g); background: color-mix(in srgb, var(--g) 16%, transparent); }
+.mono { font-variant-numeric: tabular-nums; color: var(--text-muted); }
+
+/* Lexique */
+.lexique { margin: 0; }
+.lexique dt { font-weight: 600; font-size: 14px; margin-top: 14px; }
+.lexique dt:first-child { margin-top: 0; }
+.lexique dd { margin: 4px 0 0; font-size: 13px; color: var(--text-muted); }

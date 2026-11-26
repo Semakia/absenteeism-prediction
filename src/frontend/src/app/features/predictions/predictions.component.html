@@ -1,10 +1,8 @@
-<div class="pred">
-  <header class="pred-header">
-    <div class="titles">
-      <a routerLink="/dashboard" class="back">← Dashboard</a>
-      <h1>Prédictions</h1>
-    </div>
-    <a routerLink="/employees" class="back">Employés →</a>
+<div class="page">
+  <header class="page-head">
+    <p class="eyebrow">Scoring</p>
+    <h1>Prédictions</h1>
+    <p class="page-sub">Estime la probabilité qu'une absence soit « excessive » pour un employé donné.</p>
   </header>
 
   <section class="card">
@@ -37,7 +35,7 @@
       </form>
     }
 
-    @if (error()) { <p class="error">{{ error() }}</p> }
+    @if (error()) { <p class="error" style="margin-top:12px">{{ error() }}</p> }
 
     @if (result(); as r) {
       <div class="result" [class.excessive]="r.is_excessive">

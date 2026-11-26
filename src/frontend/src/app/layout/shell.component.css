@@ -1,0 +1,64 @@
+.app-shell { display: flex; min-height: 100vh; }
+
+/* ---------- Barre latérale ---------- */
+.sidebar {
+  width: 244px;
+  flex-shrink: 0;
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.brand { display: flex; align-items: center; gap: 11px; padding: 6px 10px 22px; font-size: 16px; font-weight: 700; }
+.logo {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--accent), var(--success));
+  display: grid; place-items: center; flex-shrink: 0;
+}
+
+.nav { display: flex; flex-direction: column; gap: 3px; }
+.nav a {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  color: var(--text-muted); font-size: 14px; font-weight: 500;
+  text-decoration: none; transition: background 0.14s, color 0.14s;
+}
+.nav a:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
+.nav a.active { background: var(--accent-weak); color: var(--text); }
+.nav a.active .ic { color: var(--accent); }
+.ic { width: 18px; height: 18px; flex-shrink: 0; }
+
+.sidebar-foot { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-soft); }
+.logout-btn {
+  display: flex; align-items: center; gap: 11px; width: 100%;
+  padding: 10px 12px; border: 0; background: transparent;
+  color: var(--text-muted); font-weight: 500; border-radius: var(--radius-sm);
+}
+.logout-btn:hover { background: var(--danger-weak); color: var(--danger-text); }
+
+/* ---------- Zone de contenu ---------- */
+.main { flex: 1; min-width: 0; height: 100vh; overflow-y: auto; }
+
+/* ---------- Responsive : sidebar en barre horizontale ---------- */
+@media (max-width: 820px) {
+  .app-shell { flex-direction: column; }
+  .sidebar {
+    width: auto; height: auto; position: sticky; top: 0; z-index: 10;
+    flex-direction: row; align-items: center; gap: 4px;
+    padding: 10px 12px; overflow-x: auto;
+  }
+  .brand { padding: 0 10px 0 4px; }
+  .brand-txt { display: none; }
+  .nav { flex-direction: row; }
+  .nav a span { display: none; }
+  .nav a { padding: 10px; }
+  .sidebar-foot { margin-top: 0; margin-left: auto; padding-top: 0; border-top: 0; border-left: 1px solid var(--border-soft); padding-left: 8px; }
+  .logout-btn { width: auto; }
+  .logout-btn span { display: none; }
+  .main { height: auto; }
+}

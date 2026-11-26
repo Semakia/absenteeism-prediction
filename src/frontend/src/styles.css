@@ -1,1 +1,231 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================
+   Design system global — thème sombre
+   Tout est piloté par des variables CSS définies sur :root.
+   Les sélecteurs d'éléments (body, input, button…) et les
+   classes utilitaires (.card, .tile, .badge…) sont GLOBAUX :
+   ils s'appliquent aussi à l'intérieur des composants Angular.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Surfaces */
+  --bg: #0e0f13;
+  --surface: #16181f;
+  --surface-2: #1c1f27;
+  --surface-3: #232733;
+  --sidebar: #121319;
+
+  /* Bordures */
+  --border: #272b35;
+  --border-soft: #20242d;
+
+  /* Textes */
+  --text: #e7e9ee;
+  --text-muted: #9aa2b1;
+  --text-faint: #6b7280;
+
+  /* Accent + sémantique */
+  --accent: #818cf8;
+  --accent-strong: #6366f1;
+  --accent-weak: rgba(129, 140, 248, 0.14);
+  --success: #10b981;
+  --success-weak: rgba(16, 185, 129, 0.15);
+  --success-text: #4ade80;
+  --danger: #f87171;
+  --danger-weak: rgba(248, 113, 113, 0.14);
+  --danger-text: #fca5a5;
+  --warning: #f59e0b;
+
+  /* Couleurs de graphes (validées en mode sombre) */
+  --chart-1: #818cf8;
+  --chart-2: #10b981;
+
+  /* Formes */
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Scrollbars discrètes */
+* { scrollbar-width: thin; scrollbar-color: var(--surface-3) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 8px; border: 2px solid var(--bg); }
+
+h1, h2, h3 { font-weight: 700; letter-spacing: -0.01em; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- Conteneur de page ---------- */
+.page { max-width: 1080px; margin: 0 auto; padding: 32px 28px 48px; }
+.page-head { margin-bottom: 24px; }
+.page-head .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+.page-head h1 { margin: 0; font-size: 26px; }
+.page-head .page-sub { margin: 6px 0 0; color: var(--text-muted); font-size: 14px; }
+.page-head.row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+
+/* ---------- Cartes ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.card > h2 { margin: 0 0 16px; font-size: 15px; font-weight: 600; }
+.card > h2 small { color: var(--text-faint); font-weight: 500; }
+
+/* ---------- Champs de formulaire ---------- */
+label { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 500; color: var(--text-muted); }
+
+input, select, textarea {
+  padding: 10px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-weak);
+}
+input::placeholder { color: var(--text-faint); }
+select { cursor: pointer; }
+select option { background: var(--surface-2); color: var(--text); }
+
+/* ---------- Boutons ---------- */
+button {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+}
+button:hover { background: var(--surface-3); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.primary { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; font-weight: 600; }
+.primary:hover { background: var(--accent); border-color: var(--accent); }
+.ghost { background: transparent; color: var(--text-muted); }
+.ghost:hover { background: var(--surface-2); color: var(--text); }
+.danger { background: transparent; color: var(--danger-text); border-color: var(--border); padding: 6px 10px; }
+.danger:hover { background: var(--danger-weak); border-color: var(--danger); }
+
+/* ---------- Tuiles de stats ---------- */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: var(--shadow);
+}
+.tile-val { font-size: 30px; font-weight: 700; line-height: 1; color: var(--text); }
+.tile-val.accent { color: var(--accent); }
+.tile-lbl { font-size: 13px; color: var(--text-muted); }
+
+/* ---------- Métriques du modèle ---------- */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 12px; }
+.metric { text-align: center; background: var(--surface-2); border: 1px solid var(--border-soft); border-radius: var(--radius-sm); padding: 14px 8px; }
+.metric b { display: block; font-size: 20px; font-weight: 700; color: var(--text); }
+.metric span { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-faint); }
+
+/* ---------- Grille deux colonnes ---------- */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 820px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ---------- Barres (graphes simples) ---------- */
+.bar-row { display: grid; grid-template-columns: 76px 1fr 52px; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-lbl { font-size: 13px; color: var(--text-muted); }
+.bar { background: var(--surface-2); border-radius: 5px; height: 16px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--chart-1); border-radius: 0 5px 5px 0; transition: width 0.4s ease; }
+.bar-fill.alt { background: var(--chart-2); }
+.bar-val { font-size: 12px; color: var(--text); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- Tableaux ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead th {
+  text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+}
+tbody td { padding: 11px 12px; border-bottom: 1px solid var(--border-soft); color: var(--text); }
+tbody tr { transition: background 0.12s; }
+tbody tr:hover { background: var(--surface-2); }
+tbody tr:last-child td { border-bottom: 0; }
+
+/* ---------- Badges ---------- */
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 11px; border-radius: 999px; background: var(--success-weak); color: var(--success-text); }
+.badge-exc { background: var(--danger-weak); color: var(--danger-text); }
+
+/* ---------- Carte résultat de prédiction ---------- */
+.result { display: flex; align-items: center; gap: 18px; margin-top: 18px; padding: 20px; border-radius: var(--radius); background: var(--success-weak); border: 1px solid rgba(16, 185, 129, 0.3); }
+.result.excessive { background: var(--danger-weak); border-color: rgba(248, 113, 113, 0.3); }
+.result-prob { font-size: 40px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.result.excessive .result-prob { color: var(--danger-text); }
+.result:not(.excessive) .result-prob { color: var(--success-text); }
+.result-txt { display: flex; flex-direction: column; gap: 3px; }
+.result-txt strong { font-size: 15px; }
+
+/* ---------- Divers ---------- */
+.hint { font-size: 12px; color: var(--text-faint); margin: 12px 0 16px; }
+.muted { color: var(--text-faint); }
+.error { color: var(--danger-text); font-size: 13px; }
+.toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.search { flex: 1; max-width: 340px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+.count { margin: 14px 2px 0; font-size: 12px; color: var(--text-faint); }
+
+/* ---------- Visite guidée (driver.js) — thème sombre ---------- */
+.driver-popover.app-tour {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.driver-popover.app-tour .driver-popover-title { color: var(--text); font-size: 15px; font-weight: 700; }
+.driver-popover.app-tour .driver-popover-description { color: var(--text-muted); font-size: 13px; }
+.driver-popover.app-tour .driver-popover-progress-text { color: var(--text-faint); font-size: 12px; }
+.driver-popover.app-tour .driver-popover-close-btn { color: var(--text-faint); }
+.driver-popover.app-tour .driver-popover-close-btn:hover { color: var(--text); }
+.driver-popover.app-tour button {
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 6px 12px; font-size: 13px; font-weight: 500; text-shadow: none;
+}
+.driver-popover.app-tour button:hover { background: var(--surface-3); }
+.driver-popover.app-tour .driver-popover-next-btn { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; font-weight: 600; }
+.driver-popover.app-tour .driver-popover-next-btn:hover { background: var(--accent); border-color: var(--accent); }
+/* Flèche de la bulle, teintée selon le côté */
+.driver-popover.app-tour .driver-popover-arrow-side-left { border-left-color: var(--surface); }
+.driver-popover.app-tour .driver-popover-arrow-side-right { border-right-color: var(--surface); }
+.driver-popover.app-tour .driver-popover-arrow-side-top { border-top-color: var(--surface); }
+.driver-popover.app-tour .driver-popover-arrow-side-bottom { border-bottom-color: var(--surface); }

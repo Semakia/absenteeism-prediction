@@ -1,0 +1,75 @@
+<div class="page">
+  <header class="page-head">
+    <p class="eyebrow">Documentation</p>
+    <h1>Guide</h1>
+    <p class="page-sub">Comprendre les motifs d'absence, les groupes et le fonctionnement de la prédiction.</p>
+  </header>
+
+  <!-- Comment ça marche -->
+  <section class="card">
+    <h2>Comment fonctionne l'application</h2>
+    <div class="steps">
+      <div class="step"><span class="step-n">1</span><p><strong>Employés</strong> — gère la fiche de chaque salarié (données démographiques et liées au trajet).</p></div>
+      <div class="step"><span class="step-n">2</span><p><strong>Prédictions</strong> — pour une absence (employé + motif + date), le modèle estime la probabilité qu'elle soit <em>excessive</em>.</p></div>
+      <div class="step"><span class="step-n">3</span><p><strong>Dashboard</strong> — agrège les absences par groupe de motif et suit la performance du modèle.</p></div>
+    </div>
+  </section>
+
+  <!-- Les 4 groupes -->
+  <section class="card">
+    <h2>Les 4 groupes de motifs</h2>
+    <p class="hint">Chaque code de motif (0–28) est rangé dans l'un de 4 groupes, utilisés comme variables par le modèle.</p>
+    <div class="group-grid">
+      @for (g of groups; track g.id) {
+        <div class="group-card" [attr.data-g]="g.id">
+          <div class="group-top">
+            <span class="group-badge">Groupe {{ g.id }}</span>
+            <span class="group-range">codes {{ g.range }}</span>
+          </div>
+          <strong class="group-label">{{ g.label }}</strong>
+          <p class="group-desc">{{ g.desc }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Table des 29 codes -->
+  <section class="card">
+    <h2>Détail des codes (CIM-10)</h2>
+    <table>
+      <thead>
+        <tr><th style="width:60px">Code</th><th>Intitulé</th><th style="width:120px">Groupe</th></tr>
+      </thead>
+      <tbody>
+        @for (r of reasons; track r.code) {
+          <tr>
+            <td class="mono">{{ r.code }}</td>
+            <td>{{ r.label }}</td>
+            <td><span class="g-pill" [attr.data-g]="r.group">Groupe {{ r.group }}</span></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Lexique -->
+  <section class="card">
+    <h2>Lexique</h2>
+    <dl class="lexique">
+      <dt>Absence « excessive »</dt>
+      <dd>Absence dont la durée dépasse le seuil appris par le modèle (médiane des heures d'absence). C'est la cible que le modèle cherche à prédire.</dd>
+      <dt>Probabilité</dt>
+      <dd>Confiance du modèle (0–100 %) que l'absence soit excessive. Au-delà de 50 %, la décision affichée est « excessive ».</dd>
+      <dt>Accuracy</dt>
+      <dd>Proportion de prédictions correctes, toutes classes confondues.</dd>
+      <dt>Precision</dt>
+      <dd>Parmi les absences prédites « excessives », combien le sont réellement.</dd>
+      <dt>Recall</dt>
+      <dd>Parmi les absences réellement excessives, combien le modèle a su détecter.</dd>
+      <dt>F1</dt>
+      <dd>Moyenne harmonique de la précision et du rappel (équilibre entre les deux).</dd>
+      <dt>ROC AUC</dt>
+      <dd>Capacité du modèle à distinguer les deux classes (0,5 = hasard, 1 = parfait).</dd>
+    </dl>
+  </section>
+</div>
